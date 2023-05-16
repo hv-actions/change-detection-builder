@@ -17,9 +17,10 @@ def find_parent_pom_directory_for_all_changed_files(changed_files):
 
 path = sys.argv[1]
 print(f"Path is - {path}")
-changed_files = [path]
+path_list = path.split()
+changed_files = [path_list]
 print(f" Changed file is - {changed_files} ")
-parent_dirs = find_parent_pom_directory_for_all_changed_files(changed_files)
+parent_dirs = find_parent_pom_directory_for_all_changed_files(*changed_files)
 for changed_file, parent_dir in parent_dirs.items():
     if parent_dir:
         print(f"The parent directory containing the pom.xml file for {changed_file} is: {parent_dir}")
