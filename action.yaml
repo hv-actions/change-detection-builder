@@ -1,20 +1,16 @@
-name: "Change Detection"
-description: "Change Detection for modules"
+name: "Gradle Build"
+description: "Runs Gradle Build"
 
 inputs:
-  project_type:
-    description: "The project type. Maven Etc"
+  working-directory:
+    description: "Working Directory"
     required: true
+    default: "."
 
 runs:
   using: "composite"
   steps:
   
-    - name: Python setup
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10' 
-
     - name: Git configuration
       run: git config --global --add safe.directory '*'
       shell: bash  
@@ -22,11 +18,14 @@ runs:
     - name: Get changed files
       id: changes
       shell: bash
-        run: |
-          changes=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | xargs)
-          echo "all=${changes}" >> $GITHUB_OUTPUT
-
-    - run: |
+      run: |
+        changes=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | xargs)
+        echo "all=${changes}"
+        echo "all=${changes}" >> $GITHUB_OUTPUT
+    
+    - name: Python command
+      run: |
+        echo "${{ steps.changes.outputs.all }}"
         python3 ${GITHUB_ACTION_PATH}/maven.py \
-          "${GITHUB_WORKSPACE}" \
-          "${{ inputs.project_type }}"
+          "${{ steps.changes.outputs.all }}" 
+      shell: bash   
