@@ -1,6 +1,11 @@
 name: "Change Detection"
 description: "Change Detection for modules"
 
+inputs:
+  project_type:
+    description: "The project type. Maven Etc"
+    required: true
+
 runs:
   using: "composite"
   steps:
@@ -20,3 +25,8 @@ runs:
         run: |
           changes=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | xargs)
           echo "all=${changes}" >> $GITHUB_OUTPUT
+
+    - run: |
+        python3 ${GITHUB_ACTION_PATH}/maven.py \
+          "${GITHUB_WORKSPACE}" \
+          "${{ inputs.project_type }}"
