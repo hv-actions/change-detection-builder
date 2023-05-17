@@ -1,7 +1,7 @@
 import os
 import sys
-import json
 
+#funtion to find parent dir name having pom.xml for all changed files
 def find_parent_pom_directory_for_all_changed_files(changed_files): 
     parent_dirs = {}
     for changed_file in changed_files:
@@ -16,32 +16,42 @@ def find_parent_pom_directory_for_all_changed_files(changed_files):
             parent_dirs[changed_file] = None
     return parent_dirs
 
+#Reading all changed files path from argumennts
 path = sys.argv[1]
-print(f"Path is - {path}")
+
+# Converting path variables value from string to array by split function
 changed_files = path.split()
-print(f" Changed file is excluding yaml - {changed_files} ")
+print(f" All changed files - {changed_files} ")
+
+#Here we are excluding all workflow path which got changed while triggering the workflow
 changed_files_exclude_yaml = [[f for f in changed_files if not f.endswith(".yaml") and not f.endswith(".yml") or not f.startswith(".github/workflows/")]]
-# changed_files_exclude_yaml = [changed_files_exclude_yaml]
-print(f" Changed file is excluding yaml - {changed_files_exclude_yaml} ")
+print(f" Changed file after excluding workflow yaml files - {changed_files_exclude_yaml} ")
+
+#Initialize empty dict
 res={}
+
+#Calling "find_parent_pom_directory_for_all_changed_files" function
 parent_dirs = find_parent_pom_directory_for_all_changed_files(*changed_files_exclude_yaml)
+
+#Traversing the parent_dirs dict with changed_file path as key and parent_dir as value
 for changed_file, parent_dir in parent_dirs.items():
     if parent_dir:
         print(f"The parent directory containing the pom.xml file for {changed_file} is: {parent_dir}")
+        # Adding all unique dirs_name inside the "res" dict 
         res.setdefault(parent_dir, changed_file)
     else:
         print(f"No pom.xml file was found in any parent directory for {changed_file}.")
+#converting all dict keys into list
 moduleList = list(res.keys())
-print(moduleList)
 
 delimiter = ', '
 
-# join the list with the delimiter
+# join the list with the delimiter and converting it from list to string
 my_modules = delimiter.join(moduleList)
-
 print(my_modules)
 
-
+#Creating an env file to pass modules names into the github env context
 env_file = os.getenv('GITHUB_ENV')
 with open(env_file, "a") as myfile:
+    #Writing all module name into githun env "MY_MODULES"
     myfile.write("MY_MODULES="+ my_modules)

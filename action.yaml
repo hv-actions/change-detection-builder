@@ -1,5 +1,5 @@
-name: "Gradle Build"
-description: "Runs Gradle Build"
+name: "Change-detection_builder"
+description: "Change-detection_builder"
 
 inputs:
   working-directory:
