@@ -19,6 +19,7 @@ path = sys.argv[1]
 print(f"Path is - {path}")
 path_list = path.split()
 changed_files = [path_list]
+print(path_list)
 # changed_files_exclude_yaml = [f for f in changed_files if not f.endswith(".yaml") and not f.endswith(".yml") or not f.startswith(".github/workflows/")]
 # changed_files_exclude_yaml = [f for f in changed_files if not f.endswith(".yaml") and not f.endswith(".yml")]
 print(f" Changed file is - {changed_files} ")
