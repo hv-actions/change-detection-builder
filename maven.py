@@ -9,7 +9,7 @@ def find_parent_pom_directory_for_all_changed_files(changed_files):
         while current_dir != os.path.dirname(current_dir):
             pom_file = os.path.join(current_dir, "pom.xml")
             if os.path.isfile(pom_file):
-                parent_dirs[changed_file] = os.path.basename(current_dir)
+                parent_dirs[changed_file] = os.path.dirname(current_dir)
                 break
             current_dir = os.path.dirname(current_dir)
         if changed_file not in parent_dirs: 
