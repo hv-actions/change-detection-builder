@@ -17,7 +17,7 @@ def find_parent_pom_directory_for_all_changed_files(changed_files):
 
 path = sys.argv[1]
 print(f"Path is - {path}")
-changed_files = path.split()
+changed_files = [path.split()]
 changed_files_exclude_yaml = [f for f in changed_files if not f.endswith(".yaml") and not f.endswith(".yml") or not f.startswith(".github/workflows/")]
 # changed_files_exclude_yaml = [f for f in changed_files if not f.endswith(".yaml") and not f.endswith(".yml")]
 print(f" Changed file is excluding yaml - {changed_files_exclude_yaml} ")
