@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 
 def find_parent_pom_directory_for_all_changed_files(changed_files): 
     parent_dirs = {}
@@ -30,8 +31,9 @@ for changed_file, parent_dir in parent_dirs.items():
     else:
         print(f"No pom.xml file was found in any parent directory for {changed_file}.")
 moduleList = list(res.keys())
-
 print(moduleList)
-env_file = os.getenv('GITHUB_ENV')
-with open(env_file, "a") as myfile:
-    myfile.writelines("MY_MODULES="+ moduleList)
+
+print(f"::set-output name=my_array::{json.dumps(moduleList)}")
+# env_file = os.getenv('GITHUB_ENV')
+# with open(env_file, "a") as myfile:
+#     myfile.writelines("MY_MODULES="+ moduleList)
