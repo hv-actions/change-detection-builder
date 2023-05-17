@@ -33,7 +33,7 @@ for changed_file, parent_dir in parent_dirs.items():
 moduleList = list(res.keys())
 print(moduleList)
 
-print(f"::set-output name=my_array::{json.dumps(moduleList)}")
+print(f"::set-output name=my_array::{moduleList}")
 # env_file = os.getenv('GITHUB_ENV')
 # with open(env_file, "a") as myfile:
 #     myfile.writelines("MY_MODULES="+ moduleList)
