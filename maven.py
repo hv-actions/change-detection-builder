@@ -21,10 +21,17 @@ changed_files = path.split()
 changed_files_exclude_yaml = [f for f in changed_files if not f.endswith(".yaml") and not f.endswith(".yml") or not f.startswith(".github/workflows/")]
 changed_files_exclude_yaml = [changed_files_exclude_yaml]
 print(f" Changed file is excluding yaml - {changed_files_exclude_yaml} ")
+res={}
 parent_dirs = find_parent_pom_directory_for_all_changed_files(*changed_files_exclude_yaml)
 for changed_file, parent_dir in parent_dirs.items():
     if parent_dir:
         print(f"The parent directory containing the pom.xml file for {changed_file} is: {parent_dir}")
-        #print(f"::set-output name=parent_dir::{parent_dir}")
+        res.setdefault(parent_dir, changed_file)
     else:
         print(f"No pom.xml file was found in any parent directory for {changed_file}.")
+moduleList = list(res.keys())
+
+print(moduleList)
+env_file = os.getenv('GITHUB_ENV')
+with open(env_file, "a") as myfile:
+    myfile.write("MY_MODULES=",moduleList)
