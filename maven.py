@@ -2,14 +2,14 @@ import os
 import sys
 
 #funtion to find parent dir name having pom.xml for all changed files
-def find_parent_pom_directory_for_all_changed_files(changed_files): 
+def find_parent_pom_directory_for_all_changed_files(changed_files,github_workspace_path): 
     parent_dirs = {}
     for changed_file in changed_files:
         current_dir = os.path.abspath(os.path.dirname(changed_file))
         while current_dir != os.path.dirname(current_dir):
             pom_file = os.path.join(current_dir, "pom.xml")
             if os.path.isfile(pom_file):
-                parent_dirs[changed_file] = os.path.dirname(current_dir)
+                parent_dirs[changed_file] = os.path.relpath(current_dir, github_workspace_path)
                 break
             current_dir = os.path.dirname(current_dir)
         if changed_file not in parent_dirs: 
@@ -32,7 +32,7 @@ print(f" Changed file after excluding workflow yaml files - {changed_files_exclu
 res={}
 
 #Calling "find_parent_pom_directory_for_all_changed_files" function
-parent_dirs = find_parent_pom_directory_for_all_changed_files(*changed_files_exclude_yaml)
+parent_dirs = find_parent_pom_directory_for_all_changed_files(*changed_files_exclude_yaml,github_workspace_path)
 
 #Traversing the parent_dirs dict with changed_file path as key and parent_dir as value
 for changed_file, parent_dir in parent_dirs.items():
