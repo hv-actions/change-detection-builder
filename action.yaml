@@ -28,4 +28,5 @@ runs:
         echo "${{ steps.changes.outputs.all }}"
         python3 ${GITHUB_ACTION_PATH}/maven.py \
           "${{ steps.changes.outputs.all }}" 
+          "${GITHUB_WORKSPACE}" 
       shell: bash   

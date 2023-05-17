@@ -18,7 +18,8 @@ def find_parent_pom_directory_for_all_changed_files(changed_files):
 
 #Reading all changed files path from argumennts
 path = sys.argv[1]
-
+github_workspace_path = sys.argv[2]
+print(github_workspace_path)
 # Converting path variables value from string to array by split function
 changed_files = path.split()
 print(f" All changed files - {changed_files} ")
