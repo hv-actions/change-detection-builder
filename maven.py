@@ -34,4 +34,4 @@ moduleList = list(res.keys())
 print(moduleList)
 env_file = os.getenv('GITHUB_ENV')
 with open(env_file, "a") as myfile:
-    myfile.write("MY_MODULES="+moduleList)
+    myfile.write("MY_MODULES="+ moduleList[0])
