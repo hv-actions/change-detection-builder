@@ -27,7 +27,7 @@ print(f" Changed file is excluding yaml - {changed_files_exclude_yaml} ")
 #         print(changed_files_exclude_yaml)
 
 parent_dirs = find_parent_pom_directory_for_all_changed_files(*changed_files_exclude_yaml)
-
+print(parent_dirs)
 for changed_file, parent_dir in parent_dirs.items():
     if parent_dir:
         print(f"The parent directory containing the pom.xml file for {changed_file} is: {parent_dir}")
