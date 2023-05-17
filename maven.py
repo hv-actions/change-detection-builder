@@ -19,13 +19,14 @@ path = sys.argv[1]
 print(f"Path is - {path}")
 path_list = path.split()
 changed_files = [path_list]
+# changed_files_exclude_yaml = [f for f in changed_files if not f.endswith(".yaml") and not f.endswith(".yml") or not f.startswith(".github/workflows/")]
+changed_files_exclude_yaml = [f for f in changed_files if not f.endswith(".yaml") and not f.endswith(".yml")]
 print(f" Changed file is - {changed_files} ")
-changed_files_exclude_yaml = [f for f in changed_files if not f.endswith(".yaml") and not f.endswith(".yml") or not f.startswith(".github/workflows/")]
-print(f" Changed file is excluding workflow files - {changed_files_exclude_yaml} ")
 parent_dirs = find_parent_pom_directory_for_all_changed_files(*changed_files_exclude_yaml)
 
 for changed_file, parent_dir in parent_dirs.items():
     if parent_dir:
         print(f"The parent directory containing the pom.xml file for {changed_file} is: {parent_dir}")
+        print(f"::set-output name=parent_dir::{parent_dir}")
     else:
         print(f"No pom.xml file was found in any parent directory for {changed_file}.")
