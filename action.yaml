@@ -1,11 +1,15 @@
-name: "Change-detection_builder"
-description: "Change-detection_builder"
+name: "Change Detection Build"
+description: "Runs Maven Build"
 
 inputs:
-  working-directory:
-    description: "Working Directory"
+  command:
     required: true
-    default: "."
+    description: "A command line statement"
+
+outputs:
+  Module:
+    description: "Module Path"
+    value: ${{ steps.files-changed.outputs.Module }}
 
 runs:
   using: "composite"
@@ -16,17 +20,31 @@ runs:
       shell: bash  
       
     - name: Get changed files
-      id: changes
+      id: changed-files
+      uses: tj-actions/changed-files@v35
+      with:
+        files_ignore: changed-files.yml
+    
+    - name: List all changed files
+      id: files-changed
       shell: bash
       run: |
-        changes=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | xargs)
-        echo "all=${changes}"
-        echo "all=${changes}" >> $GITHUB_OUTPUT
-    
-    - name: Python command
-      run: |
-        echo "${{ steps.changes.outputs.all }}"
-        python3 ${GITHUB_ACTION_PATH}/maven.py \
-          "${{ steps.changes.outputs.all }}" \
-          "${GITHUB_WORKSPACE}" 
-      shell: bash   
+        for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          echo "$file was changed"
+          python3 ${GITHUB_ACTION_PATH}/maven.py --modified_file $file >> module_details.txt  
+          done
+          uniq_modules=`cat module_details.txt | sort -u`
+          echo "Found uniqe modules:"
+          echo "$uniq_modules"
+          cat module_details.txt
+          modules=""
+          while read -r line;
+          do
+          module_path=`echo $line | cut -d"," -f2` 
+          module=`echo $line | cut -d"," -f1`
+          modules="$module,$modules"
+          done < module_details.txt
+          modules=$(echo $modules | sed 's/,$//g')
+          echo "module= ${modules}"
+          echo "module= ${modules}" >> $GITHUB_OUTPUT
+          
