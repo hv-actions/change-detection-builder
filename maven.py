@@ -55,6 +55,8 @@ else:
 
     print("Res key")
     print(res.keys())
+    print("Res types")
+    type(res.key())
     moduleList = list(res.keys())
 
     delimiter = ', '
