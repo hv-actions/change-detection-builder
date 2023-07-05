@@ -76,5 +76,9 @@ else:
 # Passing changed module names to GITHUB_OUTPUT
 name = 'changed_modules'
 value = my_modules
+
+name1 = 'changed_modules_path'
+value1 = my_modules_path
 with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
         print(f'{name}={value}', file=fh)
+        print(f'{name1}={value1}', file=fh)
