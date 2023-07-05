@@ -40,6 +40,9 @@ else:
     #Calling "find_parent_pom_directory_for_all_changed_files" function
     parent_dirs = find_parent_pom_directory_for_all_changed_files(*changed_files_exclude_yaml,github_workspace_path)
 
+    print("Parent Dirs name")
+    print(parent_dirs)
+
     #Traversing the parent_dirs dict with changed_file path as key and parent_dir as value
     for changed_file, parent_dir in parent_dirs.items():
         if parent_dir:
@@ -49,6 +52,9 @@ else:
         else:
             print(f"No pom.xml file was found in any parent directory for {changed_file}.")
     #converting all dict keys into list
+
+    print("Res key")
+    print(res.keys())
     moduleList = list(res.keys())
 
     delimiter = ', '
