@@ -59,11 +59,19 @@ else:
     print(type(res.keys()))
     moduleList = list(res.keys())
 
+    modified_dict = {("./" + key): value for key, value in res.items()}
+    modulepath = list(modified_dict.keys())
+
+   
+
     delimiter = ', '
 
     # join the list with the delimiter and converting it from list to string
     my_modules = delimiter.join(moduleList)
     print(my_modules)
+
+    my_modules_path = delimiter.join(modulepath)
+    print(my_modules_path)
 
 # Passing changed module names to GITHUB_OUTPUT
 name = 'changed_modules'
