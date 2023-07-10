@@ -82,3 +82,5 @@ value1 = my_modules_path
 with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
         print(f'{name}={value}', file=fh)
         print(f'{name1}={value1}', file=fh)
+
+
