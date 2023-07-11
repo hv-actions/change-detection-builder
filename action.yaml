@@ -20,17 +20,6 @@ runs:
     - name: Get changed files
       id: changed-files
       uses: tj-actions/changed-files@v37
-
-    # - name: Get changed files
-    #   id: changes
-    #   shell: bash
-    #   run: |
-    #     changes=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | xargs)
-    #     if [[ -z "$changes" ]]; then
-    #       changes=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)
-    #     fi
-    #     echo "all=${changes}"
-    #     echo "all=${changes}" >> $GITHUB_OUTPUT
     
     - name: Python command
       id: python_script
@@ -40,5 +29,3 @@ runs:
           "${{ steps.changed-files.outputs.all_changed_files }}" \
           "${GITHUB_WORKSPACE}" 
       shell: bash
-
-

@@ -62,8 +62,6 @@ else:
     modified_dict = {("./" + key): value for key, value in res.items()}
     modulepath = list(modified_dict.keys())
 
-   
-
     delimiter = ', '
 
     # join the list with the delimiter and converting it from list to string
@@ -82,5 +80,3 @@ value1 = my_modules_path
 with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
         print(f'{name}={value}', file=fh)
         print(f'{name1}={value1}', file=fh)
-
-
