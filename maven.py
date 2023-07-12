@@ -51,32 +51,20 @@ else:
             res.setdefault(parent_dir, changed_file)
         else:
             print(f"No pom.xml file was found in any parent directory for {changed_file}.")
-    #converting all dict keys into list
-
-    print("Res key")
-    print(res.keys())
-    print("Res types")
-    print(type(res.keys()))
-    moduleList = list(res.keys())
-
+    #Adding "./" at the start of the Path
     modified_dict = {("./" + key): value for key, value in res.items()}
+
+    #converting all dict keys into list
     modulepath = list(modified_dict.keys())
 
     delimiter = ', '
 
     # join the list with the delimiter and converting it from list to string
-    my_modules = delimiter.join(moduleList)
-    print(my_modules)
-
     my_modules_path = delimiter.join(modulepath)
     print(my_modules_path)
 
-# Passing changed module names to GITHUB_OUTPUT
-name = 'changed_modules'
-value = my_modules
-
-name1 = 'changed_modules_path'
-value1 = my_modules_path
+# Passing changed module paths to GITHUB_OUTPUT
+name = 'changed_modules_path'
+value = my_modules_path
 with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
         print(f'{name}={value}', file=fh)
-        print(f'{name1}={value1}', file=fh)

@@ -2,9 +2,6 @@ name: "Change-detection_builder"
 description: "Change-detection_builder"
 
 outputs:
-  changed_modules:
-    description: "Names of modules which got changed"
-    value: ${{ steps.python_script.outputs.changed_modules }}
   changed_modules_path:
     description: "Path of modules which got changed"
     value: ${{ steps.python_script.outputs.changed_modules_path }}
