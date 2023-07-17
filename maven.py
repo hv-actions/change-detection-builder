@@ -31,7 +31,7 @@ print(f" Changed file after excluding workflow yaml files - {changed_files_exclu
 #If no file got changed then we are setting root directory path
 if len(changed_files_exclude_yaml[0]) == 0:
     print("No File Change for Module. Building Whole Project.")
-    my_modules="."
+    my_modules_path="."
 else:
     #If files got changed then we are finding root POM folder for file changed
     #Initialize empty dict
@@ -48,17 +48,20 @@ else:
             res.setdefault(parent_dir, changed_file)
         else:
             print(f"No pom.xml file was found in any parent directory for {changed_file}.")
+    #Adding "./" at the start of the Submodule Path excluding root directory
+    modified_dict = {key if "." in key else "./" + key: value for key, value in res.items()}
+
     #converting all dict keys into list
-    moduleList = list(res.keys())
+    modulepath = list(modified_dict.keys())
 
     delimiter = ', '
 
     # join the list with the delimiter and converting it from list to string
-    my_modules = delimiter.join(moduleList)
-    print(my_modules)
+    my_modules_path = delimiter.join(modulepath)
+    print(my_modules_path)
 
-# Passing changed module names to GITHUB_OUTPUT
-name = 'changed_modules'
-value = my_modules
+# Passing changed module paths to GITHUB_OUTPUT
+name = 'changed_modules_path'
+value = my_modules_path
 with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
         print(f'{name}={value}', file=fh)

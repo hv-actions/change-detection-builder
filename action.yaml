@@ -3,8 +3,8 @@ description: "Change-detection_builder"
 
 outputs:
   changed_modules:
-    description: "Names of modules which got changed"
-    value: ${{ steps.python_script.outputs.changed_modules }}
+    description: "Path of modules which got changed"
+    value: ${{ steps.python_script.outputs.changed_modules_path }}
 
 runs:
   using: "composite"
@@ -13,23 +13,16 @@ runs:
     - name: Git configuration
       run: git config --global --add safe.directory '*'
       shell: bash  
-      
+
     - name: Get changed files
-      id: changes
-      shell: bash
-      run: |
-        changes=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | xargs)
-        if [[ -z "$changes" ]]; then
-          changes=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)
-        fi
-        echo "all=${changes}"
-        echo "all=${changes}" >> $GITHUB_OUTPUT
+      id: changed-files
+      uses: tj-actions/changed-files@v37
     
     - name: Python command
       id: python_script
       run: |
         echo "${{ steps.changes.outputs.all }}"
         python3 ${GITHUB_ACTION_PATH}/maven.py \
-          "${{ steps.changes.outputs.all }}" \
+          "${{ steps.changed-files.outputs.all_changed_files }}" \
           "${GITHUB_WORKSPACE}" 
       shell: bash
