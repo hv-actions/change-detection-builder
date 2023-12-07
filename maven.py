@@ -25,7 +25,7 @@ changed_files = path.split()
 print(f" All changed files - {changed_files} ")
 
 #Here we are excluding all workflow path which got changed while triggering the workflow
-changed_files_exclude_yaml = [[f for f in changed_files if not f.endswith(".yaml") and not f.endswith(".yml") or not f.startswith(".github/workflows/") or not f.startswith(".frogbot/")]]
+changed_files_exclude_yaml = [[f for f in changed_files if not f.endswith(".yaml") and not f.endswith(".yml") or not f.startswith(".github/workflows/") and not f.startswith(".frogbot/")]]
 print(f" Changed file after excluding workflow yaml files - {changed_files_exclude_yaml} ")
 
 #If no file got changed then we are setting root directory path
