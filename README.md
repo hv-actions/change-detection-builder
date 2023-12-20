@@ -7,14 +7,14 @@ Aims to focus maven builds for certain submodules. When executing a Maven build,
 # Calling Change detection composite action in workflow
 - name: Change detection Composite action
   id: change_detection
-  uses: hv-actions/change-detection-builder@develop
+  uses: hv-actions/change-detection-builder@stable  #The stable tag always points to the latest changes
 ```
 
 ```
 #Build The Project for changed modules
 - name: Build
   id: Build
-  uses: lumada-common-services/gh-composite-actions@develop
+  uses: lumada-common-services/gh-composite-actions@stable
   with:
     command: mvn clean install -pl "${{ steps.change_detection.outputs.changed_modules }}"  -DskipTests -amd -s ${{env.MAVEN_SETTINGS}}
 ```
@@ -27,5 +27,12 @@ This composite system performs two main tasks: detecting files that have changed
   - -pl "./module1_path, ./module2_path": The -pl option, followed by a comma-separated list of module paths, allows you to specify specific modules to build. In this case, it indicates that only the modules named "module1" and "module2" should be built. Other modules in the project will be skipped.
   - -amd: The -amd option, short for "also make dependencies," is a non-standard option typically used with the Maven reactor. When this option is enabled, Maven will build not only the specified modules (module1 and module2) but also their dependent modules if they have changed since the last build. It ensures that the dependencies are up to date.
 - If no files have been changed, the value of ${{ steps.change_detection.outputs.changed_modules }} is set to the current directory, represented by ".". Running the Maven build command with -pl "${{ steps.change_detection.outputs.changed_modules }}" will then build all submodules in the project.
-
+- As a default, it will exclude these paths ```'.yaml, .yml, .github/'``` while running the change detection. However, if we want to exclude specific paths or files ending with a particular extension, we can define that value as follows
+```
+- name: Change detection Composite action
+  id: change_detection
+  uses: hv-actions/change-detection-builder@stable
+  with:
+    exclude_paths: '.github/, .frogbot/, .json, .py'
+```
 In summary, this script optimizes the build process by selectively building only the necessary submodules when changes are detected, improving overall build efficiency.

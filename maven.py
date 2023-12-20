@@ -19,14 +19,21 @@ def find_parent_pom_directory_for_all_changed_files(changed_files,github_workspa
 #Reading all changed files path from arguments
 path = sys.argv[1]
 github_workspace_path = sys.argv[2]
+exclude_paths = sys.argv[3]
+
+exclude_paths = [item.strip() for item in exclude_paths.split(',')]
+print(f" exclude path list - {exclude_paths} ")
 
 #Converting space separated string into array list and storing output in variable
 changed_files = path.split()
 print(f" All changed files - {changed_files} ")
 
 #Here we are excluding all workflow path which got changed while triggering the workflow
-changed_files_exclude_yaml = [[f for f in changed_files if not f.endswith(".yaml") and not f.endswith(".yml") or not f.startswith(".github/workflows/")]]
-print(f" Changed file after excluding workflow yaml files - {changed_files_exclude_yaml} ")
+changed_files_exclude_yaml = [[
+    file for file in changed_files
+    if not any(item in file for item in exclude_paths)
+]]
+print(f" Changed the file after excluding all paths provided in the exclude path list - {changed_files_exclude_yaml} ")
 
 #If no file got changed then we are setting root directory path
 if len(changed_files_exclude_yaml[0]) == 0:

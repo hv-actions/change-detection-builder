@@ -1,6 +1,12 @@
 name: "Change-detection_builder"
 description: "Change-detection_builder"
 
+inputs:
+  exclude_paths:
+    description: '"Path to exclude while running change detection.'
+    type: string
+    default: '.yaml, .yml, .github/'
+    
 outputs:
   changed_modules:
     description: "Path of modules which got changed"
@@ -24,5 +30,6 @@ runs:
         echo "${{ steps.changes.outputs.all }}"
         python3 ${GITHUB_ACTION_PATH}/maven.py \
           "${{ steps.changed-files.outputs.all_changed_files }}" \
-          "${GITHUB_WORKSPACE}" 
+          "${GITHUB_WORKSPACE}" \
+          "${{ inputs.exclude_paths }}"
       shell: bash
