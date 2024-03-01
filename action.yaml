@@ -22,7 +22,7 @@ runs:
 
     - name: Get changed files
       id: changed-files
-      uses: tj-actions/changed-files@v37
+      uses: tj-actions/changed-files@v42
     
     - name: Python command
       id: python_script
