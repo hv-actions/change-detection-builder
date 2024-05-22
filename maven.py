@@ -25,7 +25,7 @@ exclude_paths = [item.strip() for item in exclude_paths.split(',')]
 print(f" exclude path list - {exclude_paths} ")
 
 #Converting space separated string into array list and storing output in variable
-changed_files = path.split()
+changed_files = path.split(',')
 print(f" All changed files - {changed_files} ")
 
 #Here we are excluding all workflow path which got changed while triggering the workflow
