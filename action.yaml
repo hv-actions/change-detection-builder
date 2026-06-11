@@ -22,12 +22,11 @@ runs:
 
     - name: Get changed files
       id: changed-files
-      uses: tj-actions/changed-files@v42
+      uses: tj-actions/changed-files@v47.0.6
     
     - name: Python command
       id: python_script
       run: |
-        echo "${{ steps.changes.outputs.all }}"
         python3 ${GITHUB_ACTION_PATH}/maven.py \
           "${{ steps.changed-files.outputs.all_changed_files }}" \
           "${GITHUB_WORKSPACE}" \
